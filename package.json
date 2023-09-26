@@ -9,6 +9,17 @@
     "test": "ng test"
   },
   "private": true,
+  "keywords": [
+    "inpost geowidget",
+    "angular inpost component",
+    "angular inpost library",
+    "angular inpost",
+    "angular geowidget"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafalik2pl/inpost-geowidget-angular.git"
+  },
   "dependencies": {
     "@angular/animations": "^14.2.0",
     "@angular/common": "^14.2.0",

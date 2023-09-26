@@ -1,9 +1,21 @@
 {
   "name": "inpost-geowidget-angular",
   "version": "0.0.1",
+  "description": "Package includes simple Angular Component library for Inpost Geowidget v5.",
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0"
+  },
+  "keywords": [
+    "inpost geowidget",
+    "angular inpost component",
+    "angular inpost library",
+    "angular inpost",
+    "angular geowidget"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafalik2pl/inpost-geowidget-angular.git"
   },
   "dependencies": {
     "tslib": "^2.3.0"
