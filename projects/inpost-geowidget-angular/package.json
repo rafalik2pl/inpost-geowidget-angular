@@ -1,6 +1,6 @@
 {
   "name": "inpost-geowidget-angular",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Package includes simple Angular Component library for Inpost Geowidget v5.",
   "peerDependencies": {
     "@angular/common": "^14.2.0",

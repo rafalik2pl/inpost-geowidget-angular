@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
     <div style="width: 1000px; height: 1000px;">
       <lib-inpost-geowidget-angular 
         [token]="token" 
-        [id]="identifier" 
+        [identifier]="identifier" 
         [language]="language" 
         (pointSelect)="pointSelect($event)" 
         (apiReady)="apiReady($event)">

@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'lib-inpost-geowidget-angular',
-  template: `
-    <inpost-geowidget [id]="identifier" [token]="token" [language]="language" [config]="config"></inpost-geowidget>
-  `,
+  template: `<div style="width: 100%; height: 100%; overflow: hidden;" id='{{ uid }}'></div>`,
   styles: [
   ]
 })
-export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit {
+export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit, OnDestroy {
+  public uid: string = '';
 
   @Input() token = '';
   @Input() identifier = 'Geo1';
@@ -21,6 +20,8 @@ export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit {
   constructor(private el: ElementRef) { }
 
   ngOnInit(): void {
+    this.uid = this.identifier + 'Wrapper'
+
     if (!this.token) {
       console.warn('Geowidget token is missing. See documentation: https://dokumentacja-inpost.atlassian.net/wiki/spaces/PL/pages/50069505/Geowidget+v5.');
     }
@@ -39,6 +40,7 @@ export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this._render();
     const geowidget = this.el.nativeElement.querySelector('#' + this.identifier);
     geowidget.addEventListener('inpost.geowidget.init', (event: any) => {
       const api = event.detail.api;
@@ -47,6 +49,21 @@ export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit {
         this.pointSelect.emit(point);
       });
     });
+  }
+
+  private _render(): void {
+    const wrapperDiv = document.getElementById(this.uid);
+
+    if (wrapperDiv) {
+      const geoCustomElement = document.createElement('inpost-geowidget');
+      geoCustomElement.setAttribute('token', this.token);
+      geoCustomElement.setAttribute('language', this.language);
+      geoCustomElement.setAttribute('config', this.config);
+      geoCustomElement.setAttribute('id', this.identifier);
+      wrapperDiv.appendChild(geoCustomElement);
+    } else {
+      console.warn('Geowidget wrapper object not found.');
+    }
   }
 
   private _getScriptUrl(): string {
@@ -80,14 +97,26 @@ export class InpostGeowidgetAngularComponent implements OnInit, AfterViewInit {
   }
 
   private _isScriptLoaded(scriptUrl: string): boolean {
-    const scripts = Array.from(document.head.querySelectorAll('script')) as HTMLScriptElement[];
+    const scripts = document.scripts;
 
-    return scripts.some((script) => script.src === scriptUrl);
+    for (let i = 0; i < scripts.length; i++) {
+      if (scripts[i].src === scriptUrl) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private _isStylesheetLoaded(stylesheetUrl: string): boolean {
     const stylesheets = Array.from(document.styleSheets) as CSSStyleSheet[];
 
     return stylesheets.some((stylesheet) => stylesheet.href === stylesheetUrl);
+  }
+
+  ngOnDestroy() {
+    const geowidget = document.querySelector(this.uid);
+    if (geowidget) {
+      geowidget.remove();
+    }
   }
 }
